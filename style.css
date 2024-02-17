@@ -1,0 +1,91 @@
+body {
+  background-size: cover;
+  background-color: #d37600;
+  position: relative;
+}
+.game {
+  width: 400px;
+  height: 400px;
+  margin: auto;
+}
+.input {
+  margin: 0 auto;
+  position: absolute;
+  display: flex;
+  color: white;
+  gap: 10px;
+  border-radius: 5px;
+  padding: 25px;
+  background-color: #ff2424;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+input button {
+  background-color: #ff9003;
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+
+  padding: 5px;
+  border: none;
+}
+.opacity {
+  opacity: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #83a6c1;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  padding: 5px;
+  margin-bottom: 7px;
+  justify-content: space-between;
+}
+
+.boxes {
+  width: 100%;
+  gap: 4px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+.box {
+  border: 3px solid #3571a4;
+  width: 70px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #272727;
+  transition: transform 1s ease; /* تحديد التحول الانتقالي */
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+}
+
+.rotated {
+  transform: rotateY(360deg); /* تدوير الصورة بزاوية 360 درجة */
+}
+
+.pointer-events {
+  pointer-events: none;
+}
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  align-items: center;
+}
+
+.result .one {
+  font-weight: 700;
+  font-size: 30px;
+}
