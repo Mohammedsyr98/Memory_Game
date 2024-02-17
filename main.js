@@ -122,7 +122,7 @@ function startGame() {
       document.querySelector(".boxes").classList.remove("pointer-events");
       let display = document.querySelector("#time");
 
-      var twoMinutes = 60 * 2;
+      var twoMinutes = 60 * 1;
 
       startTimer(twoMinutes, display);
     }
@@ -176,9 +176,7 @@ function startGame() {
           correctSpan.textContent = `Correct tries : ${correctTries}`;
           let correct = new Audio("correct.mp3");
           document.querySelector(".boxes").classList.add("pointer-events");
-          if (correctTries == 10) {
-            endGame(correctTries, wrongTries);
-          }
+
           setTimeout(() => {
             document.querySelector(".boxes").classList.remove("pointer-events");
           }, 1000);
@@ -186,10 +184,14 @@ function startGame() {
           second.style.borderColor = "green";
           correct.play();
         }
+        if (correctTries == 10) {
+          endGame(correctTries, wrongTries);
+        }
       }
     });
   }
 }
+console.log(obj);
 
 function addImagefromarray() {
   for (let i = 0; i < images.length; i++) {
@@ -210,14 +212,18 @@ function addImagefromarray() {
 let result = document.querySelectorAll(".result");
 
 function endGame(correctTries, wrongTries) {
+  setTimeout(() => {
+    for (let i = 0; i < 20; i++) {
+      imageBox[i].classList.add("pointer-events");
+    }
+  }, 500);
   let result = document.querySelector(".result");
   document.querySelector(".boxes").classList.add("pointer-events");
   if (correctTries < wrongTries) {
     result.children[0].textContent = `Try Again`;
     result.children[0].style.color = "red";
     result.children[1].textContent = `because your Wrong Tries bigger than Correct tries`;
-  }
-  if (correctTries > wrongTries) {
+  } else if (correctTries > wrongTries) {
     result.children[0].textContent = `CONGRATULATIONS!`;
     result.children[0].style.color = "green";
     result.children[1].textContent =
