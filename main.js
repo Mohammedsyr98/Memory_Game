@@ -50,12 +50,11 @@ let emoji = [
 ];
 
 let allPhotoes = [vegetables, animals, shapes, emoji];
-console.log(allPhotoes);
 
 let randomphotoes = Math.floor(Math.random() * allPhotoes.length);
 // select images array from allphotoes
 let images = [...allPhotoes[randomphotoes]];
-console.log(images);
+
 let newArray = [];
 // push images from selected array to new array with random index
 while (newArray.length < 20) {
@@ -66,12 +65,10 @@ while (newArray.length < 20) {
 }
 
 let imageBox = document.querySelectorAll(".box");
+
 let obj = {};
 let randomArray = Array.from(new Set(newArray));
-let nameInput = document.querySelector("input");
-let name = document.querySelector(".name");
-let input = document.querySelector(".input");
-let button = document.getElementById("start");
+
 document.querySelector(".boxes").classList.add("pointer-events");
 document.querySelector(".game").style.filter = "blur(10px)";
 let j = 0;
@@ -81,6 +78,10 @@ let j = 0;
 window.addEventListener("load", checkStoredName());
 
 function checkStoredName() {
+  let nameInput = document.querySelector("input");
+  let name = document.querySelector(".name");
+  let input = document.querySelector(".input");
+  let button = document.getElementById("start");
   if (sessionStorage.getItem("name") != null) {
     name.textContent = `Hello : ${sessionStorage.getItem("name")}`;
     input.remove();
@@ -107,92 +108,7 @@ function checkStoredName() {
   }
 }
 
-let first = "";
-let second = "";
-let targetCount = 0;
-let wrongTries = 0;
-let correctTries = 0;
-function startGame() {
-  //add question mark photo
-
-  setTimeout(() => {
-    for (let i = 0; i < 20; i++) {
-      imageBox[i].classList.add("rotated");
-      imageBox[i].innerHTML = `<img src="img/Asset 2.png" alt="">`;
-      document.querySelector(".boxes").classList.remove("pointer-events");
-      let display = document.querySelector("#time");
-
-      var twoMinutes = 60 * 1;
-
-      startTimer(twoMinutes, display);
-    }
-  }, "4000");
-
-  let wrongSpan = document.querySelector(".wrongTries");
-  let correctSpan = document.querySelector(".correctTries");
-
-  // reveal cards after click
-  for (let n = 0; n < 20; n++) {
-    imageBox[n].addEventListener("click", function (e) {
-      if (targetCount == 0) {
-        first = imageBox[n];
-        imageBox[n].innerHTML = obj[n];
-        first.classList.add("pointer-events");
-        first.classList.remove("rotated");
-
-        targetCount++;
-      } else if (targetCount == 1) {
-        let second = imageBox[n];
-        imageBox[n].innerHTML = obj[n];
-        second.classList.add("pointer-events");
-        second.classList.remove("rotated");
-
-        targetCount--;
-
-        // Check if clicking on the first card is equal to clicking on the second card
-
-        if (first.innerHTML != second.innerHTML) {
-          let wrong = new Audio("wrong.mp3");
-          first.style.borderColor = "red";
-          second.style.borderColor = "red";
-          wrong.play();
-          wrongTries++;
-          wrongSpan.textContent = `Wrong tries : ${wrongTries} `;
-          document.querySelector(".boxes").classList.add("pointer-events");
-          setTimeout(() => {
-            second.innerHTML = `<img src="img/Asset 2.png" alt="">`;
-            first.innerHTML = `<img src="img/Asset 2.png" alt="">`;
-            first.style.borderColor = "#3571a4";
-            second.style.borderColor = "#3571a4";
-            first.classList.remove("pointer-events");
-            second.classList.remove("pointer-events");
-            first.classList.add("rotated");
-            second.classList.add("rotated");
-            document.querySelector(".boxes").classList.remove("pointer-events");
-          }, 2000);
-        } else if (first.innerHTML == second.innerHTML) {
-          correctTries++;
-
-          correctSpan.textContent = `Correct tries : ${correctTries}`;
-          let correct = new Audio("correct.mp3");
-          document.querySelector(".boxes").classList.add("pointer-events");
-
-          setTimeout(() => {
-            document.querySelector(".boxes").classList.remove("pointer-events");
-          }, 1000);
-          first.style.borderColor = "green";
-          second.style.borderColor = "green";
-          correct.play();
-        }
-        if (correctTries == 10) {
-          endGame(correctTries, wrongTries);
-        }
-      }
-    });
-  }
-}
-console.log(obj);
-
+// add images from selected array
 function addImagefromarray() {
   for (let i = 0; i < images.length; i++) {
     for (let m = 0; m < 2; m++) {
@@ -208,29 +124,93 @@ function addImagefromarray() {
     }
   }
 }
+//hide iamges and add question mark fuction
 
-let result = document.querySelectorAll(".result");
+function addquestionmarkPhoto() {
+  imageBox.forEach((ele, index) => {
+    imageBox[index].classList.add("rotated");
+    imageBox[index].innerHTML = `<img src="img/Asset 2.png" alt="">`;
+    let display = document.querySelector("#time");
+    document.querySelector(".boxes").classList.remove("pointer-events");
 
-function endGame(correctTries, wrongTries) {
-  setTimeout(() => {
-    for (let i = 0; i < 20; i++) {
-      imageBox[i].classList.add("pointer-events");
-    }
-  }, 500);
-  let result = document.querySelector(".result");
-  document.querySelector(".boxes").classList.add("pointer-events");
-  if (correctTries < wrongTries) {
-    result.children[0].textContent = `Try Again`;
-    result.children[0].style.color = "red";
-    result.children[1].textContent = `because your Wrong Tries bigger than Correct tries`;
-  } else if (correctTries > wrongTries) {
-    result.children[0].textContent = `CONGRATULATIONS!`;
-    result.children[0].style.color = "green";
-    result.children[1].textContent =
-      " Your correct tries bigger than Wrong tries";
+    var twoMinutes = 60 * 1;
+
+    startTimer(twoMinutes, display);
+  });
+}
+let first = "";
+let second = "";
+let targetCount = 0;
+let wrongTries = 0;
+let correctTries = 0;
+// check clicked targets function
+function checkClickedtarget(first, second) {
+  let wrongSpan = document.querySelector(".wrongTries");
+  let correctSpan = document.querySelector(".correctTries");
+  if (first.innerHTML != second.innerHTML) {
+    let wrong = new Audio("wrong.mp3");
+    first.style.borderColor = "red";
+    second.style.borderColor = "red";
+    wrong.play();
+    wrongTries++;
+    wrongSpan.textContent = `Wrong tries : ${wrongTries} `;
+    document.querySelector(".boxes").classList.add("pointer-events");
+    setTimeout(() => {
+      second.innerHTML = `<img src="img/Asset 2.png" alt="">`;
+      first.innerHTML = `<img src="img/Asset 2.png" alt="">`;
+      first.style.borderColor = "#3571a4";
+      second.style.borderColor = "#3571a4";
+      first.classList.remove("pointer-events");
+      second.classList.remove("pointer-events");
+      first.classList.add("rotated");
+      second.classList.add("rotated");
+      document.querySelector(".boxes").classList.remove("pointer-events");
+    }, 2000);
+  } else if (first.innerHTML == second.innerHTML) {
+    correctTries++;
+
+    correctSpan.textContent = `Correct tries : ${correctTries}`;
+    let correct = new Audio("correct.mp3");
+    document.querySelector(".boxes").classList.add("pointer-events");
+
+    setTimeout(() => {
+      document.querySelector(".boxes").classList.remove("pointer-events");
+    }, 1000);
+    first.style.borderColor = "green";
+    second.style.borderColor = "green";
+    correct.play();
   }
 }
+// reveal cards fuction (includes checkClickedtarget function after reveal)
+function revealCards() {
+  imageBox.forEach((ele, index) =>
+    ele.addEventListener("click", function (e) {
+      if (targetCount == 0) {
+        first = ele;
+        ele.innerHTML = obj[index];
+        first.classList.add("pointer-events");
+        first.classList.remove("rotated");
 
+        targetCount++;
+      } else if (targetCount == 1) {
+        second = ele;
+        ele.innerHTML = obj[index];
+        second.classList.add("pointer-events");
+        second.classList.remove("rotated");
+
+        targetCount--;
+
+        // Check if clicking on the first card is equal to clicking on the second card
+
+        checkClickedtarget(first, second);
+
+        if (correctTries == 10) {
+          endGame(correctTries, wrongTries);
+        }
+      }
+    })
+  );
+}
 function startTimer(duration, display) {
   var timer = duration,
     minutes,
@@ -248,7 +228,44 @@ function startTimer(duration, display) {
       clearInterval(intervalId);
       timer = duration;
       endGame(correctTries, wrongTries);
-      console.log("the timer is end");
     }
   }, 1000);
 }
+function startGame() {
+  //add question mark photo
+
+  setTimeout(() => {
+    addquestionmarkPhoto();
+  }, "4000");
+
+  // reveal cards after click
+  revealCards();
+}
+
+let result = document.querySelectorAll(".result");
+
+function endGame(correctTries, wrongTries) {
+  setTimeout(() => {
+    imageBox.forEach((index) =>
+      imageBox[index].classList.add("pointer-events")
+    );
+  }, 500);
+  let result = document.querySelector(".result");
+  document.querySelector(".boxes").classList.add("pointer-events");
+  if (correctTries < wrongTries) {
+    result.children[0].textContent = `Try Again`;
+    result.children[0].style.color = "red";
+    result.children[1].textContent = `because your Wrong Tries bigger than Correct tries`;
+  } else if (correctTries > wrongTries) {
+    result.children[0].textContent = `CONGRATULATIONS!`;
+    result.children[0].style.color = "green";
+    result.children[1].textContent =
+      " Your correct tries bigger than Wrong tries";
+  }
+}
+
+
+
+
+
+
